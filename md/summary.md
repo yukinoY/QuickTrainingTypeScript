@@ -101,6 +101,7 @@ readonlyキーワード
 let data: readonly string[] = [‘Java’, ‘Python’];
 data[1] = ‘Python 3’; // NG
 ```
+```
 ただしreadonlyがチェックするのは一次元目の要素だけ
 let data: number[][] = [[10, 20], [30, 40], [50, 60]];
 data[1][1] = 5;
@@ -182,6 +183,7 @@ let triangle = function(base: number, height: number): number {
 console.log(triangle(10, 5)); // 25
 
 この場合、triangleの型宣言をしていないので型推論によりfunction型となる
+```
 ```
 型宣言を明示的にしたい場合
 [構文]関数型の宣言
