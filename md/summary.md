@@ -211,4 +211,136 @@ let triangle:(base: number, height: number) => number =
 let triangle = (base: number, height: number): number => {
   return base * height / 2;
 }
+
+短くも書ける
+Let triangle = (base: number, height: number): number => base * height / 2;
+```
+
+- データ型
+```
+void … 戻り値なし
+never … 例外スロー、無限ループで戻り値なし
+```
+
+- 省略可能な引数
+```
+「?」を付ける
+function addLine(count? :number) { ...
+```
+
+- 引数にデフォルト値を設定する
+```
+function addLine(count: number = 1) {…
+
+補足
+  - 任意引数の後ろに必須引数は配置できない
+  - デフォルト値には式も指定できる
+```
+
+- 可変長引数
+```
+「...」を付ける
+function addChar(...char :number[]) { …
+
+「…」は配列で受け取るので[]必須
+```
+
+- オーバーロード
+  - メソッドを実装する際は、オーバーロードした全ての引数を受け取れるように引数はany型を選択する
+
+## Part5 高度な型
+- 共用型
+```
+let data: number | boolean;
+data = 0; // OK
+data = true; // OK
+data = 'hoge'; //NG
+
+配列の場合
+let data: (number | boolean) = [ ... ];
+
+戻り値
+function addLine(count: number): number | boolean { ...
+
+引数
+function addLine(count: number | boolean): void { ...
+```
+
+- 型ガード<br>
+引数にnumberとstringを設定した時...<br>
+toUpperCase()など両方に当てはまらないメソッドを使用する場合<br>
+if文で分岐させる必要がある。<br>
+プリミティブ型の場合 `typeof`<br>
+クラス型の場合 `instanceof`<br>
+
+- ユーザー定義の型ガード関数<br>
+ここはまだ理解が必要。
+
+- unknown型<br>
+中身がわからないので、何でもありの型。<br>
+any型と違う点は、「中身がわからない」ので ｀.trim()` など型に依存するものは使えない。<br>
+使う場合は `typeof` を使って中身が何なのか判定する必要がある。<br>
+　→ 型チェックを必ず行う必要があるので、any型より安全に使える
+
+- null非許容型<br>
+tsconfig.jsonでnullの代入を禁止するように設定できる。<br>
+オプションを有効にした状態で許可するには、以下のようにする。
+```
+let count = number | null = null;
+let day = number | undefined = undefined;
+```
+
+- null許容型に便利な演算子<br>
+unknown型と同じく、null/undefined許容型のメンバーにアクセスするには<br>
+オブジェクトがnull/undefinedでないことを判定する必要がある。
+```
+「?.」を付ける
+let currentCount = count?.toString();
+
+連続でも呼び出せる
+hoge?.fuga?.bar();
+```
+
+- null/undefinedの場合にデフォルト値を設定する「??」演算子
+```
+let hoge = fuga ?? 1;
+
+例）
+文字列長を取得する例
+let hoge = str?.length ?? 0;
+```
+
+- 型エイリアス
+```
+任意の方に対してエイリアスを設定する
+主にタプル型や、共用型に用いる
+
+例）
+type Kata = [number. boolean, string];
+let Cata: Kata = [1, true, 'あ’];
+
+type Hoge = number | string;
+```
+タプル型及び共用型以外でエイリアスを使いたくなったら、<br>
+インターフェースで実現できないかを考える
+
+- 文字列リテラル型
+```
+特定の文字列を型として利用できる仕組み
+
+例）
+type Name = ‘myoji’ | ’name’;
+
+function getName(n: Name) {
+}
+getName('myoji'); // OK
+getName('middle'); // NG
+```
+
+- リテラル型と型推論<br>
+`const` は 数値リテラル<br>
+`let` は 型推論<br>
+```
+const count = 1; // 常に1
+let day = 12; // number型
 ```
